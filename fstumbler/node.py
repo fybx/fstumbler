@@ -52,6 +52,20 @@ class Node:
             return count
         return -1
 
+    
+    def ll_count(self) -> int:
+        """Returns the total amount of nodes in this linked list.
+
+        Returns:
+            int: 1 by default.
+        """
+        count = 1
+        pointer = self.next
+        while pointer:
+            count += 1
+            pointer = pointer.next
+        return count
+
 
     def copy(self):
         return Node(self.parent, self.name, self.directory)
