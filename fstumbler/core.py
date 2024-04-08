@@ -26,6 +26,15 @@ from util import fast_forward
 
 
 def tumble(root_directory: str) -> Optional[Node]:
+    """Tumbles down from the root directory, essentially mapping all subdirectories and files.
+
+    Args:
+        root_directory (str): Root directory to start from
+
+    Returns:
+        Optional[Node]: The root directory's node, or [None] if the root_directory
+        does not exist. 
+    """
     if not os.path.exists(root_directory):
         return None
     
@@ -49,6 +58,11 @@ def tumble(root_directory: str) -> Optional[Node]:
 
 
 def tree(node: Node):
+    """Prints the full names of files and directories in a linked list.
+
+    Args:
+        node (Node): Start node
+    """
     print(node.full_path)
     if node.next:
         tree(node.next)
