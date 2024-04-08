@@ -54,3 +54,18 @@ def tree(node: Node):
         tree(node.next)
 
 
+def dry_cp(source: Node, destination: Node):
+    if not source.directory:
+        select = fast_forward(destination, True)
+        keep = select.next
+        select.next = source.copyWith(select.parent, select.name, False)
+        select.next.next = keep
+        return
+    
+    pSrc, pDst = source, fast_forward(destination)
+    while pSrc:
+        pDst.next = pSrc.copyWith(pDst.full_path if pDst.directory else pDst.parent,
+                                  pSrc.name, pSrc.directory)
+        pSrc, pDst = pSrc.next, pDst.next
+
+
