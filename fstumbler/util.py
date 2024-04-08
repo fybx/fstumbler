@@ -19,6 +19,13 @@
 
 from node import Node
 
+def fast_forward(node: Node, at_edge=False):
+    if not at_edge:
+        return __fast_forward(node)
+    temp = node
+    while temp.next and not temp.next.directory:
+        temp = temp.next
+    return temp
 
 def __fast_forward(node: Node):
     temp = node
