@@ -68,9 +68,10 @@ def tree(node: Node):
     Args:
         node (Node): Start node
     """
-    print(node.full_path)
-    if node.next:
-        tree(node.next)
+    pointer = node
+    while pointer:
+        print(pointer.full_path)
+        pointer = pointer.next
 
 
 def dry_cp(source: Node, destination: Node):
