@@ -43,14 +43,19 @@ def tumble(root_directory: str) -> Optional[Node]:
     root = Node(os.path.dirname(full_path), name)
     pointer = root
     
+    parent_dirs = []
+    last_parent = ''
     for rootname, dirnames, filenames in os.walk(full_path):
-        for filename in filenames:
-            node = Node(rootname, filename, False)
+        if rootname not in parent_dirs:
+            parent_dirs = [os.path.join(rootname, name) for name in dirnames]
+            last_parent = rootname
+        else:
+            node = Node(last_parent, os.path.basename(rootname))
             pointer.next = node
             pointer = node
         
-        for dirname in dirnames:
-            node = Node(rootname, dirname)
+        for filename in filenames:
+            node = Node(rootname, filename, directory=False)
             pointer.next = node
             pointer = node
     
