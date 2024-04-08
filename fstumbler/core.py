@@ -47,3 +47,10 @@ def tumble(root_directory: str) -> Optional[Node]:
     
     return root
 
+
+def tree(node: Node):
+    print(node.full_path)
+    if node.next:
+        tree(node.next)
+
+
