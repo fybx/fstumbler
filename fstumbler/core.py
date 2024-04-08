@@ -25,18 +25,20 @@ from node import Node
 from util import fast_forward
 
 
-def tumble(root_directory: str) -> Optional[Node]:
+def tumble(root_directory: str) -> Node:
     """Tumbles down from the root directory, essentially mapping all subdirectories and files.
 
     Args:
         root_directory (str): Root directory to start from
 
     Returns:
-        Optional[Node]: The root directory's node, or [None] if the root_directory
-        does not exist. 
+        Node: The root directory's node
+    
+    Raises:
+        FileNotFoundError: if the root_directory is not an existing file 
     """
     if not os.path.exists(root_directory):
-        return None
+        raise FileNotFoundError(root_directory)
     
     full_path = os.path.abspath(root_directory)
     name = os.path.basename(full_path)
