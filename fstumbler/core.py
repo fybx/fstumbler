@@ -69,3 +69,23 @@ def dry_cp(source: Node, destination: Node):
         pSrc, pDst = pSrc.next, pDst.next
 
 
+def cp(source: Node, destination: Node):
+    if not source.directory:
+        select = fast_forward(destination, True)
+        keep = select.next
+        select.next = source.copyWith(select.parent, select.name, False)
+        select.next.next = keep
+        shutil.copy(source.full_path, select.next.full_path)
+        return
+    
+    pSrc, pDst = source, fast_forward(destination)
+    while pSrc:
+        pDst.next = pSrc.copyWith(pDst.full_path if pDst.directory else pDst.parent,
+                                  pSrc.name, pSrc.directory)
+        
+        if pSrc.directory:
+            os.makedirs(pDst.next.full_path, exist_ok=True)
+        else:
+            shutil.copy(pSrc.full_path, pDst.next.full_path)
+        pSrc, pDst = pSrc.next, pDst.next
+    
