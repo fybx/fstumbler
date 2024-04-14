@@ -18,11 +18,10 @@
 #   USA.
 
 import os
-
 import shutil
-from typing import Optional
+
 from node import Node
-from util import fast_forward
+from util import fast_forward, contains, level_diff
 
 
 def tumble(root_directory: str) -> Node:
@@ -69,6 +68,32 @@ def tree(node: Node):
     pointer = node
     while pointer:
         print(pointer.full_path)
+        pointer = pointer.next
+
+
+def special_tree(node: Node, ignore_list: list[str], indent=2):
+    """Prints file names and directories in a readable layout.
+
+    Args:
+        node (Node): Start node
+        ignore_list (list[str]): Ignore matcher list. Path names with strings
+        specified are not printed.
+        indent (int, optional): Amount of indentation. Defaults to 2.
+    """
+    depth = 1
+    print(node.full_path)
+    pointer = node.next
+
+    while pointer:
+        if not contains(pointer.full_path, ignore_list):
+            print(' ' * depth * indent + pointer.name + ('/' if pointer.directory else ''))
+        
+        if pointer.directory and pointer.next and pointer.next.parent == pointer.full_path:
+            depth += 1
+        elif pointer.next and pointer.next.directory and os.path.dirname(pointer.parent) == pointer.next.parent:
+            depth -= 1
+        elif pointer.next:
+            depth -= level_diff(pointer.full_path, pointer.next.full_path)
         pointer = pointer.next
 
 

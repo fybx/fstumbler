@@ -32,3 +32,12 @@ def __fast_forward(node: Node):
     while temp.next:
         temp = temp.next
     return temp
+
+def contains(str: str, any: list[str]):
+    for some in any:
+        if some in str:
+            return True
+    return False
+
+def level_diff(str1: str, str2: str) -> int:
+    return str1.count('/') - str2.count('/')
