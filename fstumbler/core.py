@@ -40,24 +40,20 @@ def tumble(root_directory: str) -> Node:
     if not os.path.exists(root_directory):
         raise FileNotFoundError(root_directory)
     
-    full_path = os.path.abspath(root_directory)
-    name = os.path.basename(full_path)
-    root = Node(os.path.dirname(full_path), name)
+    root = Node(os.path.dirname(root_directory), os.path.basename(root_directory), directory=True)
     pointer = root
     
-    parent_dirs = []
-    last_parent = ''
-    for rootname, dirnames, filenames in os.walk(full_path):
-        if rootname not in parent_dirs:
-            parent_dirs = [os.path.join(rootname, name) for name in dirnames]
-            last_parent = rootname
+    first = True
+    for rootname, _, filenames in os.walk(os.path.abspath(root_directory)):
+        if first:
+            first = False
         else:
-            node = Node(last_parent, os.path.basename(rootname))
+            node = Node(os.path.dirname(rootname), os.path.basename(rootname), directory=True)
             pointer.next = node
             pointer = node
         
-        for filename in filenames:
-            node = Node(rootname, filename, directory=False)
+        for name in filenames:
+            node = Node(rootname, name, directory=False)
             pointer.next = node
             pointer = node
     
